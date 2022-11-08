@@ -1,0 +1,2 @@
+*******************************************************************************
+[1] = Filtrar por Demora [2] = Filtrar por Reputacion [3] = Filtrar por Comida
