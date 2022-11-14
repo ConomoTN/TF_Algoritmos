@@ -50,7 +50,7 @@ void Cola<T>::enqueue(T v) {
 
 template<class T>
 T Cola<T>::dequeue() {
-	
+	if (esVacia() == true) return 0;
 	T dato = inicio->valor;
 
 		if (inicio == fin) {

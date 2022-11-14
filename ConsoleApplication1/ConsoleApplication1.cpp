@@ -9,11 +9,17 @@
 #include <string>
 #include "DLL.h"
 #include "Restaurante.h"
+#include "HashTable.h"
+#include "Binarytree.h"
 
 Cola<Pedido*>* cola;
-Lista<Usuario*>* usuu;
 Usuario* usuario;
 DLL<Restaurante*>* ress;
+HashTable<int>* hash;
+BinarySearchTree<Usuario*>* arbol;
+
+using namespace std;
+
 int l = 0;
 
 void MostrarResta(int num) {
@@ -172,11 +178,13 @@ void MostrarResta(int num) {
 		
 }
 void procesaOpciones(char op) {
-	usuario = usuu->getNom();
+	usuario = arbol->getNom();
+	/*usuario = usuu->getNom();*/
 	char caracter;
 	string res;
 	string com;
 	string usu;
+	int edad;
 	string Direccion;
 	int numero;
 	char c;
@@ -200,13 +208,15 @@ void procesaOpciones(char op) {
 
 	switch (op) {
 	case'0':
+
 		pedidos.open("datos.txt", ios::out);
 		if (pedidos.is_open()) {
-			for (int i = 0; i < usuu->longi(); i++)
-			{
-				usuario = usuu->ObtenerPos(i);
-				pedidos << usuario->getNombre()<< "|" << usuario->getDir()<<"|"<<usuario->getPed() << endl;
-			}
+			arbol->roadTree(
+				[&](Usuario* value)-> void {
+				pedidos << value->getNombre() << "|" << value->getDir() << "|" << value->getPed() << "\n";
+				}
+			);
+			
 		}
 		pedidos.close();
 
@@ -280,7 +290,8 @@ void procesaOpciones(char op) {
 		}
 		else {
 			ped = cola->dequeue();
-			usuario = usuu->getNom();
+		/*	usuario = usuu->getNom();*/
+			usuario = arbol->getNom();
 			cout << "El pedido "<< " de:"<< usuario->toString()<<" que es " << ped->toString() << " ha sido terminado" << endl;
 			cin.get();
 			cin.ignore();
@@ -296,22 +307,25 @@ void procesaOpciones(char op) {
 		cin >> nom;
 		cout << "Ingrese su direccion: " << endl;
 		cin >> dir;
+		cout << "Ingrese su edad: " << endl;
+		cin >> edad;
 		cout << "Ingrese su numero: " << endl;
 		cin >> tel;
-		usuario = new Usuario(nom, dir, tel, cola);
-		usuu->AgregarInicio(usuario);
+		usuario = new Usuario(nom, dir, tel, cola,edad);
+		arbol->insert(usuario);
 		break;
 	case'5':
-		for (int i = 0; i < usuu->longi(); i++)
-		{
-			usuario = usuu->ObtenerPos(i);
-			cout << usuario->getNombre() << " = " << i << endl;
-
-		}
+		
+		cout << "PreOrden: ";
+		arbol->preOrder();
+		cout << endl;
+		cout << "En Orden: ";
+		arbol->enOrden();
+		cout << endl;
+		cout << "PosOrden: ";
+		arbol->posOrden();
 		cin.get();
 		cin.ignore();
-		/*cout << "Diga cual cuenta quiere entrar: ";
-		cin >> pos;*/
 		
 		break;
 	}
@@ -324,7 +338,8 @@ void CrearUsuarioNu() {
 	
 	int tel;
 	int num;
-	if (usuu->EsVacia() == true) {
+	int edad;
+	if (/*usuu->EsVacia() == true*/ arbol->EsVacia() == true) {
 		
 		cola = new Cola<Pedido*>();
 		cout << "Usted no tiene cuenta, cree su cuenta" << endl;
@@ -332,10 +347,13 @@ void CrearUsuarioNu() {
 		cin >> nom;
 		cout << "Ingrese su direccion: " << endl;
 		cin >> dir;
+		cout << "Ingrese su edad: " << endl;
+		cin >> edad;
 		cout << "Ingrese su numero: " << endl;
 		cin >> tel;
-		usr = new Usuario(nom, dir,tel,cola);
-		usuu->AgregarInicio(usr);
+		usr = new Usuario(nom, dir,tel,cola,edad);
+		/*usuu->AgregarInicio(usr);*/
+		arbol->insert(usr);
 	}
 	else {
 		return;
@@ -349,21 +367,26 @@ void CrearUsuario() {
 
 	int tel;
 	int num;
+	int edad;
 		cola = new Cola<Pedido*>();
 		cout << "Usted no tiene cuenta, cree su cuenta" << endl;
 		cout << "Ingrese su nombre: ";
 		cin >> nom;
 		cout << "Ingrese su direccion: " << endl;
 		cin >> dir;
+		cout << "Ingrese su edad: " << endl;
+		cin >> edad;
 		cout << "Ingrese su numero: " << endl;
 		cin >> tel;
-		usr = new Usuario(nom, dir, tel, cola);
-		usuu->AgregarInicio(usr);
+		usr = new Usuario(nom, dir, tel, cola,edad);
+		/*usuu->AgregarInicio(usr);*/
+		arbol->insert(usr);
 
 }
 
 int main()
 {
+	ofstream pedidos;
 	
 	ress = new DLL<Restaurante*>();
 
@@ -377,17 +400,38 @@ int main()
 
 
 	
-	usuu = new Lista<Usuario*>();
+	arbol = new BinarySearchTree<Usuario*>(
+		[](Usuario* value)-> void {
+			cout << value->getEdad() << "|";
+		},
+		[](Usuario* a, Usuario* b)-> bool {
+			return a->getEdad() < b->getEdad();
+		}, [&](Usuario* value)-> void {
+			/*pedidos << usuario->getNombre() << "|" << usuario->getDir() << "|" << usuario->getPed() << endl;*/
+			pedidos.open("datos.txt", ios::out);
+			if (pedidos.is_open()) {
+				/*for (int i = 0; i < usuu->longi(); i++)
+				{
+					usuario = usuu->ObtenerPos(i);
+					pedidos << usuario->getNombre()<< "|" << usuario->getDir()<<"|"<<usuario->getPed() << endl;
+				}*/
+				pedidos << value->getNombre() << "|" << value->getDir() << "|" << value->getPed() << "\n";
+			}
+			pedidos.close();
+			/*cout << value->getNombre() << "|" << value->getDir()<< "|"<<value->getPed()<< "\n";*/
+		}
+
+		);
 	char op;
 	
 	do {
 	
 		CrearUsuarioNu();
-		usuario = usuu->getNom();
+		usuario = arbol->getNom();
 		l++;
 
 		system("CLS");
-		cout << "************* PEDIDOS YA *****************        Saludos " << usuario->getNombre() << endl;
+		cout << "************* PEDIDOS YA *****************        Saludos Usuario " /*<< usuario->getNombre()*/ << endl;
 		cout << "[1] - Registrar Pedido" << endl;
 		cout << "[2] - Ver Pedidos" << endl;
 		cout << "[3] - Finalizar Pedido" << endl;

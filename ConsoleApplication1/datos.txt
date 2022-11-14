@@ -1,2 +1,3 @@
-Alavaro|Adnsaidosa| Pedido(McDonalds, MCPollo) | 
-Braulio|Avasfsa| Pedido(McDonalds, DeQueso) | 
+a|a| Pedido(McDonalds, BigMac) | 
+b|b| Pedido(McDonalds, DeQueso) | 
+c|c| Pedido(McDonalds, asd) | 

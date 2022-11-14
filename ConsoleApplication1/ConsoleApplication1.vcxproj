@@ -142,9 +142,13 @@
     <ClCompile Include="ConsoleApplication1.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AVL.h" />
+    <ClInclude Include="Binarytree.h" />
     <ClInclude Include="Cola.h" />
     <ClInclude Include="DLL.h" />
+    <ClInclude Include="HashTable.h" />
     <ClInclude Include="Lista.h" />
+    <ClInclude Include="MergeSort.h" />
     <ClInclude Include="Nodo.h" />
     <ClInclude Include="Pedido.h" />
     <ClInclude Include="Restaurante.h" />

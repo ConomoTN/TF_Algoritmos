@@ -7,15 +7,16 @@ using namespace std;
 
 class Usuario {
 	string x, y;
-	int cod;
+	int cod, edad;
 	Cola<Pedido*>* cola;
 
 public:
-	Usuario(string nom, string dir, int codi, Cola<Pedido*>* cola) {
+	Usuario(string nom, string dir, int codi, Cola<Pedido*>* cola, int edad) {
 		this->x = nom;
 		this->y = dir;
-		this->cod = 0;
+		this->cod = codi;
 		this->cola = cola;
+		this->edad = edad;
 	};
 	string toString() {
 		ostringstream ss;
@@ -27,6 +28,10 @@ public:
 	string getDir();
 	int getNum();
 	string getPed();
+	int getEdad() {
+		return edad;
+	}
+
 
 
 
@@ -43,6 +48,7 @@ string Usuario::getNombre() {
 string Usuario::getDir() {
 	return y;
 }
+
 int Usuario::getNum() {
 	return cod;
 }

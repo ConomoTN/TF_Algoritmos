@@ -5,6 +5,7 @@
 #include "Usuario.h"
 #include <functional>
 
+using namespace std;
 typedef unsigned int uint;
 
 template<class T>
@@ -26,6 +27,13 @@ public:
 	void swap(T& a, T& b);
 	void swap2(Nodo<T>* a, Nodo<T>* b);
 	void Intercambio(int l);
+	T getByCriteria(function<bool(T)> criteria) {
+		Nodo<T>* aux = inicio;
+		while (aux) {
+			if (criteria(aux->valor))return aux->valor;
+			aux = aux->siguiente;
+		}
+	}
 
 	
 };
@@ -85,6 +93,7 @@ void Lista<T>::AgregarFinal(T v)
 			aux = aux->siguiente;
 		aux->siguiente = nuevo;
 		nuevo->siguiente = inicio;
+		longitud++;
 	}
 
 }
@@ -114,7 +123,7 @@ void Lista<T>::Mostrar()
 		cout << pto->toString();
 		if (nodo != NULL)
 			cout << "->";
-		nodo = nodo->siguiente;
+		nodo = nodo->siguiente;                                   
 
 	} while (nodo != inicio);
 	cout << "\n";
