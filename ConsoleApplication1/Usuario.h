@@ -3,20 +3,24 @@
 #include <sstream>
 #include "Cola.h"
 #include "Pedido.h"
+#include "HashTable.h"
+#include "Tarjeta.h"
 using namespace std;
 
 class Usuario {
 	string x, y;
 	int cod, edad;
 	Cola<Pedido*>* cola;
+	HashTable<Tarjeta*>* hash;
 
 public:
-	Usuario(string nom, string dir, int codi, Cola<Pedido*>* cola, int edad) {
+	Usuario(string nom, string dir, int codi, Cola<Pedido*>* cola, int edad, HashTable<Tarjeta*>* table) {
 		this->x = nom;
 		this->y = dir;
 		this->cod = codi;
 		this->cola = cola;
 		this->edad = edad;
+		this->hash = table;
 	};
 	string toString() {
 		ostringstream ss;

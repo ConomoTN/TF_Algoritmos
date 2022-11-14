@@ -152,6 +152,7 @@
     <ClInclude Include="Nodo.h" />
     <ClInclude Include="Pedido.h" />
     <ClInclude Include="Restaurante.h" />
+    <ClInclude Include="Tarjeta.h" />
     <ClInclude Include="Usuario.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

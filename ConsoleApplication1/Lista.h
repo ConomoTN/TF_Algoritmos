@@ -2,7 +2,7 @@
 #include "Nodo.h"
 #include "Pedido.h"
 #include <string>
-#include "Usuario.h"
+
 #include <functional>
 
 using namespace std;
@@ -34,7 +34,13 @@ public:
 			aux = aux->siguiente;
 		}
 	}
-
+	void display(std::function<void(T)> show) {
+		Nodo<T>* aux = this->inicio;
+		while (aux) {
+			show(aux->valor);
+			aux = aux->siguiente;
+		}
+	}
 	
 };
 template<class T>
@@ -62,7 +68,7 @@ void Lista<T>::AgregarInicio(T v)
 	nuevo = new Nodo<T>(v);
 	if (inicio == NULL) {
 		inicio = nuevo;
-		nuevo->siguiente = inicio;
+		/*nuevo->siguiente = inicio;*/
 		longitud++;
 	}
 	else {

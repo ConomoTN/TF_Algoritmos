@@ -11,16 +11,40 @@
 #include "Restaurante.h"
 #include "HashTable.h"
 #include "Binarytree.h"
-
+#include "Tarjeta.h"
+#include "Lista.h"
 Cola<Pedido*>* cola;
 Usuario* usuario;
 DLL<Restaurante*>* ress;
-HashTable<int>* hash;
 BinarySearchTree<Usuario*>* arbol;
-
+HashTable<Tarjeta*>* hashing;
 using namespace std;
 
 int l = 0;
+
+void IngresarTarjeta() {
+	string nombr, titular;
+	int nume, fecha, cods,sec;
+	Tarjeta* tar;
+	cout << "El nombre de su banco: "<< endl;
+	cin >> nombr;
+	cout << "Ingrese su numero de tarjeta: " << endl;
+	cin >> nume;
+	cout << "Ingrese su fecha de caducidad: " << endl;
+	cin >> cods;
+	cout << "Ingrese su contraseña secreta: " << endl;
+	cin >> sec;
+	cout << "Indique el titular de la tarjeta: " << endl;
+	cin >> titular;
+
+	tar = new Tarjeta(nume, cods, sec, titular);
+	hashing->insert(nombr, tar);
+	hashing->displayy([](Tarjeta* value) -> void {
+		cout << value->toString() << "\n";
+		cin.get();
+		cin.ignore();
+		});
+}
 
 void MostrarResta(int num) {
 	char carac;
@@ -179,7 +203,6 @@ void MostrarResta(int num) {
 }
 void procesaOpciones(char op) {
 	usuario = arbol->getNom();
-	/*usuario = usuu->getNom();*/
 	char caracter;
 	string res;
 	string com;
@@ -302,6 +325,7 @@ void procesaOpciones(char op) {
 	case'4':
 		
 		cola = new Cola<Pedido*>();
+		hashing = new HashTable<Tarjeta*>(10);
 		cout << "Cree su cuenta" << endl;
 		cout << "Ingrese su nombre: ";
 		cin >> nom;
@@ -311,7 +335,7 @@ void procesaOpciones(char op) {
 		cin >> edad;
 		cout << "Ingrese su numero: " << endl;
 		cin >> tel;
-		usuario = new Usuario(nom, dir, tel, cola,edad);
+		usuario = new Usuario(nom, dir, tel, cola,edad, hashing);
 		arbol->insert(usuario);
 		break;
 	case'5':
@@ -328,7 +352,12 @@ void procesaOpciones(char op) {
 		cin.ignore();
 		
 		break;
+	case'6':
+		IngresarTarjeta();
+
+		break;
 	}
+	
 
 
 }
@@ -342,6 +371,7 @@ void CrearUsuarioNu() {
 	if (/*usuu->EsVacia() == true*/ arbol->EsVacia() == true) {
 		
 		cola = new Cola<Pedido*>();
+		hashing = new HashTable<Tarjeta*>(10);
 		cout << "Usted no tiene cuenta, cree su cuenta" << endl;
 		cout << "Ingrese su nombre: ";
 		cin >> nom;
@@ -351,7 +381,7 @@ void CrearUsuarioNu() {
 		cin >> edad;
 		cout << "Ingrese su numero: " << endl;
 		cin >> tel;
-		usr = new Usuario(nom, dir,tel,cola,edad);
+		usr = new Usuario(nom, dir,tel,cola,edad, hashing);
 		/*usuu->AgregarInicio(usr);*/
 		arbol->insert(usr);
 	}
@@ -369,6 +399,7 @@ void CrearUsuario() {
 	int num;
 	int edad;
 		cola = new Cola<Pedido*>();
+		hashing = new HashTable<Tarjeta*>(10);
 		cout << "Usted no tiene cuenta, cree su cuenta" << endl;
 		cout << "Ingrese su nombre: ";
 		cin >> nom;
@@ -378,7 +409,7 @@ void CrearUsuario() {
 		cin >> edad;
 		cout << "Ingrese su numero: " << endl;
 		cin >> tel;
-		usr = new Usuario(nom, dir, tel, cola,edad);
+		usr = new Usuario(nom, dir, tel, cola,edad,hashing);
 		/*usuu->AgregarInicio(usr);*/
 		arbol->insert(usr);
 
@@ -397,7 +428,7 @@ int main()
 	ress->insertarFinal(new Restaurante("DrSushi Japones ---  [d]", 3,4.4,50));
 	ress->insertarFinal(new Restaurante("Bembos Hamburguesas ---  [e]", 1,4.9,30));
 	ress->insertarFinal(new Restaurante("PizzaHut Pizzas ---  [p]", 4,4.1,40));
-
+	
 
 	
 	arbol = new BinarySearchTree<Usuario*>(
@@ -437,6 +468,7 @@ int main()
 		cout << "[3] - Finalizar Pedido" << endl;
 		cout << "[4] - Crear nueva cuenta" << endl;
 		cout << "[5] - Usuarios Creados" << endl;
+		cout << "[6] - Añadir metodo de pago" << endl;
 		cout << "[0] - Salir" << endl;
 		cout << "Ingrese Opcion:";
 		cin >> op;

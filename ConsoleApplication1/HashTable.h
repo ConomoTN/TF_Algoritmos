@@ -1,3 +1,4 @@
+#pragma once
 #include <string>
 #include <cmath>
 #include "Lista.h"
@@ -6,6 +7,8 @@ using namespace std;
 
 template<class T>
 class HashTable {
+
+
 public:
     HashTable(size_t capacity) : _capacity(capacity) {
         _size = 0;
@@ -16,7 +19,7 @@ public:
         if (_size == _capacity) throw "Hash table is full";
         int index = _hashFunction(key);
         if (_hashTable[index] == nullptr) _hashTable[index] = new Lista<Element>();
-        _hashTable[index]->AgregarFinal(Element{ key,value });
+        _hashTable[index]->AgregarInicio(Element{ key,value });
         ++_size;
     }
     T& operator[](std::string key) {
@@ -35,7 +38,7 @@ public:
             });
         return value;
     }
-    void display(void (*show)(T)) {
+    void displayy(void (*show)(T)) {
         for (unsigned int i = 0; i < _capacity; ++i) {
             std::cout << "\nPos: " << i << ": ";
             if (_hashTable[i] == nullptr) {
@@ -59,7 +62,8 @@ private:
     int _hashFunction(string key) {
         int res = 0;
         for (unsigned int i = 0; i < key.length(); ++i) {
-            res += pow(static_cast<int>(key[i]), i + 1);
+           /* res += pow(static_cast<int>(key[i]), i + 1);*/
+            res += static_cast<int>(key[i]);
         }
          // 0´1 1'2 2'3 3'4  
         return res % _capacity;

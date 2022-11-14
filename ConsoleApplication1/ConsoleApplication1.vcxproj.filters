@@ -53,5 +53,8 @@
     <ClInclude Include="AVL.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Tarjeta.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
