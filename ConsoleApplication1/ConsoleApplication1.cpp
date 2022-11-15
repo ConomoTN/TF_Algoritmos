@@ -19,31 +19,39 @@ DLL<Restaurante*>* ress;
 BinarySearchTree<Usuario*>* arbol;
 HashTable<Tarjeta*>* hashing;
 using namespace std;
-
+string u;
 int l = 0;
 
 void IngresarTarjeta() {
+	system("CLS");
 	string nombr, titular;
-	int nume, fecha, cods,sec;
+	int nume, fecha, cods,sec,tarj;
 	Tarjeta* tar;
-	cout << "El nombre de su banco: "<< endl;
-	cin >> nombr;
+	cout << "El nombre de su banco: " << endl;
+
+	cout << "[1] = BCP [2] = Scotiabank [3] = BBVA [4] = Interbank" << endl;
+	cin >> tarj;
+	if (tarj == 1) nombr = "bcp";
+	if (tarj == 2) nombr = "scotiabank";
+	if (tarj == 3) nombr = "bbva";
+	if (tarj == 4) nombr = "interba";
+
+	
 	cout << "Ingrese su numero de tarjeta: " << endl;
 	cin >> nume;
 	cout << "Ingrese su fecha de caducidad: " << endl;
 	cin >> cods;
 	cout << "Ingrese su contraseña secreta: " << endl;
 	cin >> sec;
-	cout << "Indique el titular de la tarjeta: " << endl;
-	cin >> titular;
 
-	tar = new Tarjeta(nume, cods, sec, titular);
+	tar = new Tarjeta(nume, cods, sec, nombr);
 	hashing->insert(nombr, tar);
-	hashing->displayy([](Tarjeta* value) -> void {
-		cout << value->toString() << "\n";
-		cin.get();
-		cin.ignore();
+	/*hashing->displayy([](Tarjeta* value) -> void {
+		cout << value->toString() << "|";
+		
 		});
+	cin.get();
+	cin.ignore();*/
 }
 
 void MostrarResta(int num) {
@@ -207,6 +215,7 @@ void procesaOpciones(char op) {
 	string res;
 	string com;
 	string usu;
+	string bankey;
 	int edad;
 	string Direccion;
 	int numero;
@@ -219,7 +228,7 @@ void procesaOpciones(char op) {
 	string nom, dir;
 	int lo;
 	int tel, pos;
-	int num;
+	int num,tarj;
 
 	auto compareCriteria = [](Restaurante* a, Restaurante* b)->bool {
 		return a->getNum() > b->getNum(); };
@@ -337,6 +346,7 @@ void procesaOpciones(char op) {
 		cin >> tel;
 		usuario = new Usuario(nom, dir, tel, cola,edad, hashing);
 		arbol->insert(usuario);
+		u = nom;
 		break;
 	case'5':
 		
@@ -355,6 +365,23 @@ void procesaOpciones(char op) {
 	case'6':
 		IngresarTarjeta();
 
+		break;
+	case'7':
+		cout << "El nombre de su banco: " << endl;
+
+		cout << "[1] = BCP [2] = Scotiabank [3] = BBVA [4] = Interbank"<< endl;
+		cin >> tarj;
+		if (tarj == 1) bankey = "bcp";
+		if (tarj == 2) bankey = "scotiabank";
+		if (tarj == 3) bankey = "bbva";
+		if (tarj == 4) bankey = "interba";
+		
+		hashing->displayk([](Tarjeta* value) -> void {
+			cout << value->toString() << "|";
+
+			}, bankey);
+		cin.get();
+		cin.ignore();
 		break;
 	}
 	
@@ -384,6 +411,7 @@ void CrearUsuarioNu() {
 		usr = new Usuario(nom, dir,tel,cola,edad, hashing);
 		/*usuu->AgregarInicio(usr);*/
 		arbol->insert(usr);
+		u = nom;
 	}
 	else {
 		return;
@@ -438,18 +466,14 @@ int main()
 		[](Usuario* a, Usuario* b)-> bool {
 			return a->getEdad() < b->getEdad();
 		}, [&](Usuario* value)-> void {
-			/*pedidos << usuario->getNombre() << "|" << usuario->getDir() << "|" << usuario->getPed() << endl;*/
+			
 			pedidos.open("datos.txt", ios::out);
 			if (pedidos.is_open()) {
-				/*for (int i = 0; i < usuu->longi(); i++)
-				{
-					usuario = usuu->ObtenerPos(i);
-					pedidos << usuario->getNombre()<< "|" << usuario->getDir()<<"|"<<usuario->getPed() << endl;
-				}*/
+				
 				pedidos << value->getNombre() << "|" << value->getDir() << "|" << value->getPed() << "\n";
 			}
 			pedidos.close();
-			/*cout << value->getNombre() << "|" << value->getDir()<< "|"<<value->getPed()<< "\n";*/
+			
 		}
 
 		);
@@ -462,13 +486,14 @@ int main()
 		l++;
 
 		system("CLS");
-		cout << "************* PEDIDOS YA *****************        Saludos Usuario " /*<< usuario->getNombre()*/ << endl;
+		cout << "************* PEDIDOS YA *****************        Saludos Usuario " << u  << endl;
 		cout << "[1] - Registrar Pedido" << endl;
 		cout << "[2] - Ver Pedidos" << endl;
 		cout << "[3] - Finalizar Pedido" << endl;
 		cout << "[4] - Crear nueva cuenta" << endl;
 		cout << "[5] - Usuarios Creados" << endl;
 		cout << "[6] - Añadir metodo de pago" << endl;
+		cout << "[7] - Ver tarjetas añadidas" << endl;
 		cout << "[0] - Salir" << endl;
 		cout << "Ingrese Opcion:";
 		cin >> op;

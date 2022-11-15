@@ -12,9 +12,10 @@ template<class T>
 class Lista {
 private:
 	Nodo<T>* inicio;
+	Nodo<T>* fin;
 	int longitud;
 public:
-	Lista(): inicio(NULL),longitud(0){}
+	Lista(): inicio(NULL),longitud(0),fin(NULL) {}
 	~Lista(){}
 	uint longi();
 	void AgregarInicio(T v);
@@ -69,16 +70,18 @@ void Lista<T>::AgregarInicio(T v)
 	if (inicio == NULL) {
 		inicio = nuevo;
 		/*nuevo->siguiente = inicio;*/
+		fin = nuevo;
+		nuevo->siguiente = nullptr;
 		longitud++;
 	}
 	else {
-		Nodo<T>* aux = inicio;
-		while (aux->siguiente != inicio)
-			aux = aux->siguiente;
+		/*Nodo<T>* aux = inicio;*/
+		/*while (aux->siguiente != inicio)
+			aux = aux->siguiente;*/
 		nuevo->siguiente = inicio;
-		aux->siguiente = nuevo;
+		/*aux->siguiente = nuevo;*/
 		inicio = nuevo;
-		aux = NULL;
+		/*aux = NULL;*/
 		longitud++;
 	}
 	nuevo = NULL;

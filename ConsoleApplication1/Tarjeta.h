@@ -17,11 +17,15 @@ public:
 	};
 	string toString() {
 		ostringstream ss;
-		ss << "Tarjeta: ";
+		ss << nom;
+		ss << " Tarjeta: ";
 		ss << _numero;
 		ss << ", ";
 		ss << _fecha;
 		ss << " ***";
 		return(ss.str());
+	}
+	string getNom() {
+		return nom;
 	}
 };

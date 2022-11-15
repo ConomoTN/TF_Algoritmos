@@ -40,14 +40,28 @@ public:
     }
     void displayy(void (*show)(T)) {
         for (unsigned int i = 0; i < _capacity; ++i) {
-            std::cout << "\nPos: " << i << ": ";
-            if (_hashTable[i] == nullptr) {
-                std::cout << "nullptr";
+            if (_hashTable[i] == nullptr)continue;
+            if (_hashTable[i] != nullptr) {
+                std::cout << "\nBanco: ";
+                _hashTable[i]->display([&](Element a) -> void {
+                    show(a.value);
+                    });
                 continue;
             }
-            _hashTable[i]->display([&](Element a) -> void {
+            /*_hashTable[i]->display([&](Element a) -> void {
+                show(a.value);
+                });*/
+        }
+    }
+    void displayk(void (*show)(T),string key) {
+        int index = _hashFunction(key);
+        if (_hashTable[index] == nullptr) { cout << "No tiene tarjetas con ese banco agregadas"; }
+        else if(_hashTable[index] != nullptr) {
+            std::cout << "\nBanco: ";
+            _hashTable[index]->display([&](Element a) -> void {
                 show(a.value);
                 });
+            
         }
     }
 private:
