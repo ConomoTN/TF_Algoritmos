@@ -145,6 +145,7 @@
     <ClInclude Include="AVL.h" />
     <ClInclude Include="Binarytree.h" />
     <ClInclude Include="Cola.h" />
+    <ClInclude Include="Cupones.h" />
     <ClInclude Include="DLL.h" />
     <ClInclude Include="HashTable.h" />
     <ClInclude Include="Lista.h" />
@@ -154,6 +155,10 @@
     <ClInclude Include="Restaurante.h" />
     <ClInclude Include="Tarjeta.h" />
     <ClInclude Include="Usuario.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
+    <None Include="Usuarios.csv" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

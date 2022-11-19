@@ -5,6 +5,8 @@
 #include "Pedido.h"
 #include "HashTable.h"
 #include "Tarjeta.h"
+#include <vector>
+#include "Cupones.h"
 using namespace std;
 
 class Usuario {
@@ -12,11 +14,13 @@ class Usuario {
 	int cod, edad;
 	Cola<Pedido*>* cola;
 	HashTable<Tarjeta*>* hash;
+	vector<Cupon*>* cup;
 
 public:
-	Usuario(string nom, string dir, int codi, Cola<Pedido*>* cola, int edad, HashTable<Tarjeta*>* table) {
+	Usuario(string nom, string dir, int codi, Cola<Pedido*>* cola, int edad, HashTable<Tarjeta*>* table, vector<Cupon*>* cupp) {
 		this->x = nom;
 		this->y = dir;
+		this->cup = cupp;
 		this->cod = codi;
 		this->cola = cola;
 		this->edad = edad;
@@ -60,9 +64,15 @@ string Usuario::getPed()
 {
 	ostringstream ss;
 	Pedido* elem;
-	do {
-		elem = cola->dequeue();
-		ss << " "<<elem->toString() << " | ";
-	} while (!cola->esVacia());
+	if (cola->esVacia() == true) {
+		ss << "No pedidos";
+	}
+	else {
+		do {
+			elem = cola->dequeue();
+			ss << " " << elem->toString() << " | ";
+		} while (!cola->esVacia());
+	}
+	
 	return(ss.str());
 }

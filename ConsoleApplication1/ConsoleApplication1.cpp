@@ -1,4 +1,5 @@
 ﻿#include <iostream>
+#include <time.h>
 #include "Nodo.h"
 #include "Lista.h"
 #include "Pedido.h"
@@ -13,17 +14,93 @@
 #include "Binarytree.h"
 #include "Tarjeta.h"
 #include "Lista.h"
+#include "AVL.h"
+#include <vector>
+#include "Cupones.h"
+#include "MergeSort.h"
+
 Cola<Pedido*>* cola;
 Usuario* usuario;
 DLL<Restaurante*>* ress;
 BinarySearchTree<Usuario*>* arbol;
 HashTable<Tarjeta*>* hashing;
-using namespace std;
+AVLTree<Restaurante*>* avl;
+int t;
+vector<Cupon*>* cupones;
+Cupon* cup;
 string u;
 int l = 0;
+using namespace std;
+void GenerarRes() {
+	avl->insert(new Restaurante("McDonnalds  Hamburguesas ---  [m]", 1, 4.7, 14));
+	avl->insert(new Restaurante("BurgerKing Hamburguesas ---  [b]", 1, 4.5, 22));
+	avl->insert(new Restaurante("La buena hamburguesa Hamburguesas ---  [l]", 1, 3.7, 30));
+	avl->insert(new Restaurante("KFP PolloFrito ---  [k]", 2, 4.8, 20));
+	avl->insert(new Restaurante("DrSushi Japones ---  [d]", 3, 4.4, 50));
+	avl->insert(new Restaurante("Bembos Hamburguesas ---  [e]", 1, 4.9, 30));
+	avl->insert(new Restaurante("PizzaHut Pizzas ---  [p]", 4, 4.1, 40));
+	/*ress->insertarInicio(new Restaurante("McDonnalds  Hamburguesas ---  [m]", 1, 4.7, 14));
+	ress->insertarInicio(new Restaurante("BurgerKing Hamburguesas ---  [b]", 1, 4.5, 22));
+	ress->insertarInicio(new Restaurante("La buena hamburguesa Hamburguesas ---  [l]", 1, 3.7, 30));
+	ress->insertarInicio(new Restaurante("KFP PolloFrito ---  [k]", 2, 4.8, 20));
+	ress->insertarFinal(new Restaurante("DrSushi Japones ---  [d]", 3, 4.4, 50));
+	ress->insertarFinal(new Restaurante("Bembos Hamburguesas ---  [e]", 1, 4.9, 30));
+	ress->insertarFinal(new Restaurante("PizzaHut Pizzas ---  [p]", 4, 4.1, 40));
+	
+}*/
+	
+}
+void GenerarCupones() {
+	cupones = new vector<Cupon*>();
+	for (int i = 0; i < 4; i++)
+	{
+		cup = new Cupon();
+		cupones->push_back(cup);
+	}
+	/*for (int i = 0; i < cupones->size(); i++)
+	{
+		cout << cupones->at(i)->toString()<<"\n";
+	}
+	
+	cin.get();
+	cin.ignore();*/
+}
+void GenerarUsuarios() {
+	ifstream lectura;
+	ofstream escritura;
 
+	lectura.open("Usuarios.csv");
+	string line;
+	while (getline(lectura, line, '\n')) {
+		stringstream s(line);
+		string aux;
+		Usuario* usr;
+
+		string nom, dir;
+		int edad, num;
+		cola = new Cola<Pedido*>();
+		hashing = new HashTable<Tarjeta*>(10);
+		cupones = new vector<Cupon*>();
+		GenerarCupones();
+		getline(s, aux, ',');
+		nom = aux;
+		getline(s, aux, ',');
+		dir = aux;
+		getline(s, aux, ',');
+		edad = stoi(aux);
+		getline(s, aux, ',');
+		num = stoi(aux);
+		usr = new Usuario(nom, dir, num, cola, edad, hashing,cupones);
+		arbol->insert(usr);
+		u = nom;
+
+	}
+	lectura.close();
+
+}
 void IngresarTarjeta() {
 	system("CLS");
+
 	string nombr, titular;
 	int nume, fecha, cods,sec,tarj;
 	Tarjeta* tar;
@@ -52,6 +129,16 @@ void IngresarTarjeta() {
 		});
 	cin.get();
 	cin.ignore();*/
+}
+void OrdernarporPun() {
+	auto compare1 = [](Restaurante* a, Restaurante* b) -> bool {
+		return a > b;
+	};
+	auto compare2 = [](Restaurante* a, Restaurante* b) -> bool {
+		return a < b;
+	};
+	
+
 }
 
 void MostrarResta(int num) {
@@ -306,7 +393,7 @@ void procesaOpciones(char op) {
 		cout << "Ingrese el restaurante deseado" << endl << endl;
 		cin >> c;
 		MostrarResta(c);
-		
+		cola->mostrar();
 
 		break;
 	case'2':
@@ -324,7 +411,7 @@ void procesaOpciones(char op) {
 			ped = cola->dequeue();
 		/*	usuario = usuu->getNom();*/
 			usuario = arbol->getNom();
-			cout << "El pedido "<< " de:"<< usuario->toString()<<" que es " << ped->toString() << " ha sido terminado" << endl;
+			cout << "El pedido "<< " de:"<< u<<" que es " << ped->toString() << " ha sido terminado" << endl;
 			cin.get();
 			cin.ignore();
 		}
@@ -335,6 +422,8 @@ void procesaOpciones(char op) {
 		
 		cola = new Cola<Pedido*>();
 		hashing = new HashTable<Tarjeta*>(10);
+		cupones = new vector<Cupon*>();
+		GenerarCupones();
 		cout << "Cree su cuenta" << endl;
 		cout << "Ingrese su nombre: ";
 		cin >> nom;
@@ -344,7 +433,7 @@ void procesaOpciones(char op) {
 		cin >> edad;
 		cout << "Ingrese su numero: " << endl;
 		cin >> tel;
-		usuario = new Usuario(nom, dir, tel, cola,edad, hashing);
+		usuario = new Usuario(nom, dir, tel, cola,edad, hashing,cupones);
 		arbol->insert(usuario);
 		u = nom;
 		break;
@@ -367,6 +456,7 @@ void procesaOpciones(char op) {
 
 		break;
 	case'7':
+		system("CLS");
 		cout << "El nombre de su banco: " << endl;
 
 		cout << "[1] = BCP [2] = Scotiabank [3] = BBVA [4] = Interbank"<< endl;
@@ -383,6 +473,57 @@ void procesaOpciones(char op) {
 		cin.get();
 		cin.ignore();
 		break;
+	case'8':
+		system("CLS");
+		for (int i = 0; i < cupones->size(); i++)
+		{
+			cout << cupones->at(i)->toString() << "\n";
+		}
+		cout << "ordenar de mayor a menor: [1] Ordenar de menor a mayor: [2]: ";
+		cin >> lo;
+		if (lo == 1) {
+			auto compare1 = [](Cupon* a, Cupon* b) -> bool {
+				return a->getDin() > b->getDin();
+			};
+			auto compare2 = [](Cupon* a, Cupon* b) -> bool {
+				return a->getDin() < b->getDin();
+			};
+
+			SortingAlgorithms<Cupon*>::quickSort(*cupones, compare1, compare2, 0, cupones->size() - 1);
+			cout << endl;
+			for (int i = 0; i < cupones->size(); i++)
+			{
+				cout << cupones->at(i)->toString() << "\n";
+			}
+		}
+		else if (lo == 2) {
+			auto compare1 = [](Cupon* a, Cupon* b) -> bool {
+				return a->getDin() > b->getDin();
+			};
+			auto compare2 = [](Cupon* a, Cupon* b) -> bool {
+				return a->getDin() < b->getDin();
+			};
+
+			SortingAlgorithms<Cupon*>::quickSort(*cupones, compare2, compare1, 0, cupones->size() - 1);
+			cout << endl;
+			for (int i = 0; i < cupones->size(); i++)
+			{
+				cout << cupones->at(i)->toString() << "\n";
+			}
+		}
+
+		cin.get();
+		cin.ignore();
+		break;
+
+		
+	case '9':
+
+		cout << avl->min()->getNombre() << endl;
+		cout << avl->max()->getNombre();
+		cin.get();
+		cin.ignore();
+		break;
 	}
 	
 
@@ -395,10 +536,12 @@ void CrearUsuarioNu() {
 	int tel;
 	int num;
 	int edad;
-	if (/*usuu->EsVacia() == true*/ arbol->EsVacia() == true) {
+	if (arbol->EsVacia() == true) {
 		
 		cola = new Cola<Pedido*>();
 		hashing = new HashTable<Tarjeta*>(10);
+		cupones = new vector<Cupon*>();
+		GenerarCupones();
 		cout << "Usted no tiene cuenta, cree su cuenta" << endl;
 		cout << "Ingrese su nombre: ";
 		cin >> nom;
@@ -408,7 +551,7 @@ void CrearUsuarioNu() {
 		cin >> edad;
 		cout << "Ingrese su numero: " << endl;
 		cin >> tel;
-		usr = new Usuario(nom, dir,tel,cola,edad, hashing);
+		usr = new Usuario(nom, dir,tel,cola,edad, hashing,cupones);
 		/*usuu->AgregarInicio(usr);*/
 		arbol->insert(usr);
 		u = nom;
@@ -428,6 +571,7 @@ void CrearUsuario() {
 	int edad;
 		cola = new Cola<Pedido*>();
 		hashing = new HashTable<Tarjeta*>(10);
+		GenerarCupones();
 		cout << "Usted no tiene cuenta, cree su cuenta" << endl;
 		cout << "Ingrese su nombre: ";
 		cin >> nom;
@@ -437,7 +581,7 @@ void CrearUsuario() {
 		cin >> edad;
 		cout << "Ingrese su numero: " << endl;
 		cin >> tel;
-		usr = new Usuario(nom, dir, tel, cola,edad,hashing);
+		usr = new Usuario(nom, dir, tel, cola,edad,hashing,cupones);
 		/*usuu->AgregarInicio(usr);*/
 		arbol->insert(usr);
 
@@ -445,10 +589,24 @@ void CrearUsuario() {
 
 int main()
 {
+	srand((unsigned)time(NULL));
 	ofstream pedidos;
 	
 	ress = new DLL<Restaurante*>();
-
+	/*avl = new AVLTree<Restaurante*>([](Restaurante* value)-> void {
+		cout << value->getNombre() << "|";
+		}, [](Restaurante* a, Restaurante* b)->bool {return a->getDem() < b->getDem(); }
+		);*/
+	/*avl->insert(new Restaurante("McDonnalds  Hamburguesas ---  [m]", 1, 4.7, 14));*/
+	avl = new AVLTree<Restaurante*>(
+		[](Restaurante* value) -> void {
+			cout << value->getNum() << " ";
+		},
+		[](Restaurante* a, Restaurante* b) -> bool {
+			return a->getDem() > b->getDem();
+		}
+		);
+	GenerarRes();
 	ress->insertarInicio(new Restaurante("McDonnalds  Hamburguesas ---  [m]", 1,4.7,14));
 	ress->insertarInicio(new Restaurante("BurgerKing Hamburguesas ---  [b]", 1,4.5,22));
 	ress->insertarInicio(new Restaurante("La buena hamburguesa Hamburguesas ---  [l]",1,3.7,30 ));
@@ -475,9 +633,9 @@ int main()
 			pedidos.close();
 			
 		}
-
 		);
 	char op;
+	GenerarUsuarios();
 	
 	do {
 	
@@ -494,8 +652,10 @@ int main()
 		cout << "[5] - Usuarios Creados" << endl;
 		cout << "[6] - Añadir metodo de pago" << endl;
 		cout << "[7] - Ver tarjetas añadidas" << endl;
+		cout << "[8] - Ver cupones: " << endl;
 		cout << "[0] - Salir" << endl;
-		cout << "Ingrese Opcion:";
+		cout << "Ingrese Opcion:" <<endl;
+		cout << "*****************************************"<<endl;
 		cin >> op;
 		procesaOpciones(op);
 		

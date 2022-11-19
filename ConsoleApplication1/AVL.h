@@ -1,10 +1,10 @@
 #include <functional>
 #include <stack>
-
+using namespace std;
 template<class T>
 class AVLTree {
 public:
-    AVLTree(std::function<void(T)> show, std::function<bool(T, T)> compare) : _show(show), _compare(compare) {
+    AVLTree(function<void(T)> show, function<bool(T, T)> compare) : _show(show), _compare(compare) {
         _root = nullptr;
         _size = 0ll;
     }
@@ -52,8 +52,8 @@ private:
     };
     Node* _root;
     size_t _size;
-    std::function<void(T)> _show;
-    std::function<bool(T, T)> _compare;
+    function<void(T)> _show;
+    function<bool(T, T)> _compare;
 private:
     void _insert(Node*& n, T value) {
         if (n == nullptr) {

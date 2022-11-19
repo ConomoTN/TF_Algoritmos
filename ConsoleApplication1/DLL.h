@@ -1,8 +1,9 @@
+#ifndef __DLL_H__
+#define __DLL_H__
+
 #include <functional>
 #include "Nodo.h"
 #include "Restaurante.h"
-
-
 template<class T>
 class DLL {
 private:
@@ -16,6 +17,7 @@ public:
 	void mostrar();
 	void BubbleSort(std::function<bool(T, T)>compare);
 	void swap(T& a, T& b);
+
 	
 };
 
@@ -109,7 +111,7 @@ inline void DLL<T>::swap(T& a, T& b)
 }
 
 //------------------------------------------------------------------------------
-
+#endif
 
 
 

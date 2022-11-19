@@ -64,6 +64,9 @@ public:
             
         }
     }
+    bool Esvacia() {
+        return(_size == 0);
+    }
 private:
     struct Element {
         string key;

@@ -1,13 +1,13 @@
 #pragma once
 #include <string>
 #include <sstream>
-
 using namespace std;
 
 
 class Restaurante
 {
 public:
+	
 	string x, y;
 	int cod;
 	float rep;
@@ -30,13 +30,21 @@ public:
 	}
 	~Restaurante();
 
-	string getNombre();
+	string getNombre() {
+		return x;
+	}
 	string getDir();
 	int getNum();
 	int getRep();
 	int getDem();
 	string getPed();
-
+	bool operator<(Restaurante b) {
+		return this->dem < b.dem;
+	}
+	bool operator>(Restaurante b) {
+		return this->dem > b.dem;
+	}
+	
 private:
 
 };

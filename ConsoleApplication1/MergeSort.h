@@ -1,6 +1,6 @@
 
 #include <vector>
-
+using namespace std;
 template<class T>
 class SortingAlgorithms {
 public:
@@ -9,7 +9,7 @@ public:
         a = b;
         b = c;
     }
-    static void quickSelect(std::vector<T>& arr, bool(*compare1)(T, T), bool(*compare2)(T, T), int i, int& p, int f) {
+    static void quickSelect(vector<T>& arr, bool(*compare1)(T, T), bool(*compare2)(T, T), int i, int& p, int f) {
         while (i < f) {
             //      a  <  b 
             while (compare1(arr[i], arr[p])) ++i;
