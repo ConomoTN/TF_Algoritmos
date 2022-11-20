@@ -3,9 +3,8 @@ Raul|AvLoscampos1234|No pedidos
 Luis|AvLusiespejos|No pedidos
 Pedro|AvElmani156|No pedidos
 Pedro|AvElmani156|No pedidos
-a|a|No pedidos
 Pedro|AvElmani156|No pedidos
-Raul|AvLoscampos1234|No pedidos
+Raul|AvLoscampos1234| Pedido(McDonalds, DeQueso) |  Pedido(McDonalds, McPollo) | 
 Ryan|AvLosalmenos14|No pedidos
 Ryan|AvLosalmenos14|No pedidos
 Ryan|AvLosalmenos14|No pedidos

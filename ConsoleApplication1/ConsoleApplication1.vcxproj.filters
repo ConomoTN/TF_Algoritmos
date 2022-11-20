@@ -59,9 +59,13 @@
     <ClInclude Include="Cupones.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Promociones.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Usuarios.csv" />
     <None Include="ClassDiagram.cd" />
+    <None Include="promocion.csv" />
   </ItemGroup>
 </Project>

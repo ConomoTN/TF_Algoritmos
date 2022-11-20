@@ -18,37 +18,42 @@
 #include <vector>
 #include "Cupones.h"
 #include "MergeSort.h"
+#include "Promociones.h"
 
 Cola<Pedido*>* cola;
 Usuario* usuario;
 DLL<Restaurante*>* ress;
 BinarySearchTree<Usuario*>* arbol;
 HashTable<Tarjeta*>* hashing;
-AVLTree<Restaurante*>* avl;
+AVLTree<Promociones*>* avl;
 int t;
 vector<Cupon*>* cupones;
 Cupon* cup;
 string u;
 int l = 0;
 using namespace std;
-void GenerarRes() {
-	avl->insert(new Restaurante("McDonnalds  Hamburguesas ---  [m]", 1, 4.7, 14));
-	avl->insert(new Restaurante("BurgerKing Hamburguesas ---  [b]", 1, 4.5, 22));
-	avl->insert(new Restaurante("La buena hamburguesa Hamburguesas ---  [l]", 1, 3.7, 30));
-	avl->insert(new Restaurante("KFP PolloFrito ---  [k]", 2, 4.8, 20));
-	avl->insert(new Restaurante("DrSushi Japones ---  [d]", 3, 4.4, 50));
-	avl->insert(new Restaurante("Bembos Hamburguesas ---  [e]", 1, 4.9, 30));
-	avl->insert(new Restaurante("PizzaHut Pizzas ---  [p]", 4, 4.1, 40));
-	/*ress->insertarInicio(new Restaurante("McDonnalds  Hamburguesas ---  [m]", 1, 4.7, 14));
-	ress->insertarInicio(new Restaurante("BurgerKing Hamburguesas ---  [b]", 1, 4.5, 22));
-	ress->insertarInicio(new Restaurante("La buena hamburguesa Hamburguesas ---  [l]", 1, 3.7, 30));
-	ress->insertarInicio(new Restaurante("KFP PolloFrito ---  [k]", 2, 4.8, 20));
-	ress->insertarFinal(new Restaurante("DrSushi Japones ---  [d]", 3, 4.4, 50));
-	ress->insertarFinal(new Restaurante("Bembos Hamburguesas ---  [e]", 1, 4.9, 30));
-	ress->insertarFinal(new Restaurante("PizzaHut Pizzas ---  [p]", 4, 4.1, 40));
-	
-}*/
-	
+void GenerarPromo() {
+	ifstream lectura;
+	ofstream escritura;
+
+	lectura.open("promocion.csv");
+	string line;
+	while (getline(lectura, line, '\n')) {
+		stringstream s(line);
+		string aux;
+		Promociones* pro;
+
+		string nom, dir;
+		int desc, vec;
+		getline(s, aux, ',');
+		nom = aux;
+		getline(s, aux, ',');
+		desc = stoi(aux);
+		pro = new Promociones(nom, desc);
+		avl->insert(pro);
+
+	}
+	lectura.close();
 }
 void GenerarCupones() {
 	cupones = new vector<Cupon*>();
@@ -57,13 +62,6 @@ void GenerarCupones() {
 		cup = new Cupon();
 		cupones->push_back(cup);
 	}
-	/*for (int i = 0; i < cupones->size(); i++)
-	{
-		cout << cupones->at(i)->toString()<<"\n";
-	}
-	
-	cin.get();
-	cin.ignore();*/
 }
 void GenerarUsuarios() {
 	ifstream lectura;
@@ -98,6 +96,7 @@ void GenerarUsuarios() {
 	lectura.close();
 
 }
+
 void IngresarTarjeta() {
 	system("CLS");
 
@@ -130,6 +129,39 @@ void IngresarTarjeta() {
 	cin.get();
 	cin.ignore();*/
 }
+//void GenerarTarjetaNu() {
+//		system("CLS");
+//
+//		string nombr, titular;
+//		int nume, fecha, cods, sec, tarj;
+//		Tarjeta* tar;
+//		cout << "El nombre de su banco: " << endl;
+//
+//		cout << "[1] = BCP [2] = Scotiabank [3] = BBVA [4] = Interbank" << endl;
+//		cin >> tarj;
+//		if (tarj == 1) nombr = "bcp";
+//		if (tarj == 2) nombr = "scotiabank";
+//		if (tarj == 3) nombr = "bbva";
+//		if (tarj == 4) nombr = "interba";
+//
+//
+//		cout << "Ingrese su numero de tarjeta: " << endl;
+//		cin >> nume;
+//		cout << "Ingrese su fecha de caducidad: " << endl;
+//		cin >> cods;
+//		cout << "Ingrese su contraseña secreta: " << endl;
+//		cin >> sec;
+//
+//		tar = new Tarjeta(nume, cods, sec, nombr);
+//		hashing->insert(nombr, tar);
+//		/*hashing->displayy([](Tarjeta* value) -> void {
+//			cout << value->toString() << "|";
+//
+//			});
+//		cin.get();
+//		cin.ignore();*/
+//	
+//}
 void OrdernarporPun() {
 	auto compare1 = [](Restaurante* a, Restaurante* b) -> bool {
 		return a > b;
@@ -168,6 +200,12 @@ void MostrarResta(int num) {
 		cin >> com;
 		ped = new Pedido(res, com, l);
 		cola->enqueue(ped);
+		if (hashing->Esvacia() == true) {
+			cout << "Usted no tiene ningun metodo de pago";
+			cin.get();
+			cin.ignore();
+			IngresarTarjeta();
+		}
 		l= l+1;
 		
 		break;
@@ -189,6 +227,12 @@ void MostrarResta(int num) {
 		cin >> com;
 		ped = new Pedido(res, com, l);
 		cola->enqueue(ped);
+		if (hashing->Esvacia() == true) {
+			cout << "Usted no tiene ningun metodo de pago";
+			cin.get();
+			cin.ignore();
+			IngresarTarjeta();
+		}
 		l++;
 		break;
 	case'l':
@@ -209,6 +253,12 @@ void MostrarResta(int num) {
 		cin >> com;
 		ped = new Pedido(res, com, l);
 		cola->enqueue(ped);
+		if (hashing->Esvacia() == true) {
+			cout << "Usted no tiene ningun metodo de pago";
+			cin.get();
+			cin.ignore();
+			IngresarTarjeta();
+		}
 		l++;
 		break;
 	case'k':
@@ -229,6 +279,12 @@ void MostrarResta(int num) {
 		cin >> com;
 		ped = new Pedido(res, com, l);
 		cola->enqueue(ped);
+		if (hashing->Esvacia() == true) {
+			cout << "Usted no tiene ningun metodo de pago";
+			cin.get();
+			cin.ignore();
+			IngresarTarjeta();
+		}
 		l++;
 		break;
 	case'd':
@@ -249,6 +305,12 @@ void MostrarResta(int num) {
 		cin >> com;
 		ped = new Pedido(res, com, l);
 		cola->enqueue(ped);
+		if (hashing->Esvacia() == true) {
+			cout << "Usted no tiene ningun metodo de pago";
+			cin.get();
+			cin.ignore();
+			IngresarTarjeta();
+		}
 		l++;
 		break;
 	case'e':
@@ -269,6 +331,12 @@ void MostrarResta(int num) {
 		cin >> com;
 		ped = new Pedido(res, com, l);
 		cola->enqueue(ped);
+		if (hashing->Esvacia() == true) {
+			cout << "Usted no tiene ningun metodo de pago";
+			cin.get();
+			cin.ignore();
+			IngresarTarjeta();
+		}
 		l++;
 		break;
 	case'p':
@@ -289,6 +357,12 @@ void MostrarResta(int num) {
 		cin >> com;
 		ped = new Pedido(res, com, l);
 		cola->enqueue(ped);
+		if (hashing->Esvacia() == true) {
+			cout << "Usted no tiene ningun metodo de pago";
+			cin.get();
+			cin.ignore();
+			IngresarTarjeta();
+		}
 		l++;
 		break;
 
@@ -518,9 +592,10 @@ void procesaOpciones(char op) {
 
 		
 	case '9':
-
-		cout << avl->min()->getNombre() << endl;
-		cout << avl->max()->getNombre();
+		avl->IterativePreOrder();
+		cout << endl;
+		cout << "El resturante: "<<avl->min()->getNombre() << "Es el que tiene menor %" << endl;
+		cout << "El resturante: " << avl->max()->getNombre() << "Es el que tiene mayor %" << endl;
 		cin.get();
 		cin.ignore();
 		break;
@@ -593,20 +668,15 @@ int main()
 	ofstream pedidos;
 	
 	ress = new DLL<Restaurante*>();
-	/*avl = new AVLTree<Restaurante*>([](Restaurante* value)-> void {
-		cout << value->getNombre() << "|";
-		}, [](Restaurante* a, Restaurante* b)->bool {return a->getDem() < b->getDem(); }
-		);*/
-	/*avl->insert(new Restaurante("McDonnalds  Hamburguesas ---  [m]", 1, 4.7, 14));*/
-	avl = new AVLTree<Restaurante*>(
-		[](Restaurante* value) -> void {
-			cout << value->getNum() << " ";
+	avl = new AVLTree<Promociones*>(
+		[](Promociones* value) -> void {
+			cout << value->toString() << " ";
 		},
-		[](Restaurante* a, Restaurante* b) -> bool {
-			return a->getDem() > b->getDem();
+		[](Promociones* a, Promociones* b) -> bool {
+			return a->getDesct() > b->getDesct();
 		}
 		);
-	GenerarRes();
+	GenerarPromo();
 	ress->insertarInicio(new Restaurante("McDonnalds  Hamburguesas ---  [m]", 1,4.7,14));
 	ress->insertarInicio(new Restaurante("BurgerKing Hamburguesas ---  [b]", 1,4.5,22));
 	ress->insertarInicio(new Restaurante("La buena hamburguesa Hamburguesas ---  [l]",1,3.7,30 ));
@@ -653,10 +723,12 @@ int main()
 		cout << "[6] - Añadir metodo de pago" << endl;
 		cout << "[7] - Ver tarjetas añadidas" << endl;
 		cout << "[8] - Ver cupones: " << endl;
+		cout << "[9] - Ver Promociones: " << endl;
 		cout << "[0] - Salir" << endl;
 		cout << "Ingrese Opcion:" <<endl;
 		cout << "*****************************************"<<endl;
 		cin >> op;
+		
 		procesaOpciones(op);
 		
 			
